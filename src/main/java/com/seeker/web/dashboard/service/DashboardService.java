@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -25,9 +26,16 @@ public class DashboardService {
         List<NodeDto> nodes = dashboardRepository.getTopologyNodes(request);
         List<EdgeDto> edges = dashboardRepository.getTopologyEdges(request);
 
-        for (NodeDto node: nodes) {
-            NodeAgentDto nodeAgent = agentRepository.getNodeAgentInfo(node.getAgentId());
-            node.setNodeAgent(nodeAgent);
+        List<String> agentIds = nodes.stream()
+                .map(NodeDto::getAgentId)
+                .toList();
+        Map<String, NodeAgentDto> agentInfoMap = agentRepository.getNodeAgentInfoMap(agentIds);
+
+        for (NodeDto node : nodes) {
+            NodeAgentDto nodeAgent = agentInfoMap.get(node.getAgentId());
+            if (nodeAgent != null) {
+                node.setNodeAgent(nodeAgent);
+            }
         }
 
         return TopologyDto
