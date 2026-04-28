@@ -7,8 +7,8 @@ import lombok.Getter;
 @Builder
 public class DashboardRequest {
 
-    private String startTime;
-    private String endTime;
+    private Long startTime;
+    private Long endTime;
     private String agentId;
 
 }
