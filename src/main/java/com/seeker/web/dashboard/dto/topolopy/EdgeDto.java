@@ -7,8 +7,8 @@ import lombok.Getter;
 @Builder
 public class EdgeDto {
 
-    private String fromAgentId;
-    private String toAgentId;
+    private AgentId fromAgentId;
+    private AgentId toAgentId;
     private double tps;
     private double avgLatency;
     private double errorRate;

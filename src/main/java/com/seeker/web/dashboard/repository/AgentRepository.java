@@ -1,5 +1,6 @@
 package com.seeker.web.dashboard.repository;
 
+import com.seeker.web.dashboard.dto.topolopy.AgentId;
 import com.seeker.web.dashboard.dto.topolopy.NodeAgentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +20,7 @@ public class AgentRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public Map<String, NodeAgentDto> getNodeAgentInfoMap(List<String> agentIds) {
+    public Map<AgentId, NodeAgentDto> getNodeAgentInfoMap(List<AgentId> agentIds) {
         if (agentIds.isEmpty()) {
             return Map.of();
         }
@@ -33,11 +34,14 @@ public class AgentRepository {
             WHERE agent_id IN (:agentIds)
         """;
 
-        SqlParameterSource params = new MapSqlParameterSource("agentIds", agentIds);
+        List<String> agentIdValues = agentIds.stream()
+                .map(AgentId::getValue)
+                .toList();
+        SqlParameterSource params = new MapSqlParameterSource("agentIds", agentIdValues);
 
         return namedParameterJdbcTemplate.query(sql, params, (rs, rowNum) ->
                 Map.entry(
-                        rs.getString("agentId"),
+                        AgentId.of(rs.getString("agentId")),
                         mapNodeAgent(rs)
                 )
             ).stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)

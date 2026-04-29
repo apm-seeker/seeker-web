@@ -1,6 +1,7 @@
 package com.seeker.web.dashboard.repository;
 
 import com.seeker.web.dashboard.dto.query.TimeRangeFilter;
+import com.seeker.web.dashboard.dto.topolopy.AgentId;
 import com.seeker.web.dashboard.dto.topolopy.EdgeDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeDto;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class DashboardRepository {
     private final RowMapper<NodeDto> nodeRowMapper = ((rs, rowNum) -> {
         return NodeDto
                 .builder()
-                .agentId(rs.getString("agentId"))
+                .agentId(AgentId.of(rs.getString("agentId")))
                 .errorRate(rs.getDouble("errorRate"))
                 .build();
     });
@@ -67,8 +68,8 @@ public class DashboardRepository {
     private final RowMapper<EdgeDto> edgeRowMapper = ((rs, rowNum) -> {
         return EdgeDto
                 .builder()
-                .fromAgentId(rs.getString("fromAgentId"))
-                .toAgentId(rs.getString("toAgentId"))
+                .fromAgentId(AgentId.of(rs.getString("fromAgentId")))
+                .toAgentId(AgentId.of(rs.getString("toAgentId")))
                 .tps(rs.getDouble("tps"))
                 .avgLatency(rs.getDouble("avgLatency"))
                 .errorRate(rs.getDouble("errorRate"))

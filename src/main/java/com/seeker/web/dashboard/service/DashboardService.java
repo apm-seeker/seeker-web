@@ -2,6 +2,7 @@ package com.seeker.web.dashboard.service;
 
 import com.seeker.web.dashboard.dto.query.TimeRangeFilter;
 import com.seeker.web.dashboard.dto.request.TopologyRequest;
+import com.seeker.web.dashboard.dto.topolopy.AgentId;
 import com.seeker.web.dashboard.dto.topolopy.EdgeDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeAgentDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeDto;
@@ -25,15 +26,17 @@ public class DashboardService {
 
     public TopologyDto getTopology(TopologyRequest topologyRequest) {
 
-        TimeRangeFilter timeRangeFilter = TimeRangeFilter.from(topologyRequest.getTimeRangeRequest());
+        TimeRangeFilter timeRangeFilter = TimeRangeFilter.of(
+                topologyRequest.getStartTime(), topologyRequest.getEndTime()
+        );
 
         List<NodeDto> nodes = dashboardRepository.getTopologyNodes(timeRangeFilter);
         List<EdgeDto> edges = dashboardRepository.getTopologyEdges(timeRangeFilter);
 
-        List<String> agentIds = nodes.stream()
+        List<AgentId> agentIds = nodes.stream()
                 .map(NodeDto::getAgentId)
                 .toList();
-        Map<String, NodeAgentDto> agentInfoMap = agentRepository.getNodeAgentInfoMap(agentIds);
+        Map<AgentId, NodeAgentDto> agentInfoMap = agentRepository.getNodeAgentInfoMap(agentIds);
 
         for (NodeDto node : nodes) {
             NodeAgentDto nodeAgent = agentInfoMap.get(node.getAgentId());

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Builder
 public class NodeDto {
 
-    private String agentId;
+    private AgentId agentId;
     private String agentName;
     private String agentType;
     private double errorRate;
