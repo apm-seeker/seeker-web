@@ -1,6 +1,6 @@
 package com.seeker.web.dashboard.repository;
 
-import com.seeker.web.dashboard.dto.requset.DashboardRequest;
+import com.seeker.web.dashboard.dto.query.TimeRangeFilter;
 import com.seeker.web.dashboard.dto.topolopy.EdgeDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeDto;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class DashboardRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<NodeDto> getTopologyNodes(DashboardRequest request) {
+    public List<NodeDto> getTopologyNodes(TimeRangeFilter timeRangeFilter) {
         String nodeSql = """
             SELECT
                 agent_id AS agentId,
@@ -31,12 +31,12 @@ public class DashboardRepository {
 
         return namedParameterJdbcTemplate.query(
                 nodeSql,
-                new BeanPropertySqlParameterSource(request),
+                new BeanPropertySqlParameterSource(timeRangeFilter),
                 nodeRowMapper
         );
     }
 
-    public List<EdgeDto> getTopologyEdges(DashboardRequest request) {
+    public List<EdgeDto> getTopologyEdges(TimeRangeFilter timeRangeFilter) {
         String edgeSql = """
             SELECT
                 parent_agent_id AS fromAgentId,
@@ -51,7 +51,7 @@ public class DashboardRepository {
 
         return namedParameterJdbcTemplate.query(
                 edgeSql,
-                new BeanPropertySqlParameterSource(request),
+                new BeanPropertySqlParameterSource(timeRangeFilter),
                 edgeRowMapper
         );
     }
