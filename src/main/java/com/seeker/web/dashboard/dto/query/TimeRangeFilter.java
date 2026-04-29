@@ -1,21 +1,19 @@
 package com.seeker.web.dashboard.dto.query;
 
-import com.seeker.web.dashboard.dto.request.TimeRangeRequest;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class TimeRangeFilter {
 
-    private Long startTime;
-    private Long endTime;
+    private final Long startTime;
+    private final Long endTime;
 
-    public static TimeRangeFilter from(TimeRangeRequest timeRangeRequest) {
-        return TimeRangeFilter
-                .builder()
-                .startTime(timeRangeRequest.getStartTime())
-                .endTime(timeRangeRequest.getEndTime())
-                .build();
+    private TimeRangeFilter(Long startTime, Long endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public static TimeRangeFilter of(Long startTime, Long endTime) {
+        return new TimeRangeFilter(startTime, endTime);
     }
 }

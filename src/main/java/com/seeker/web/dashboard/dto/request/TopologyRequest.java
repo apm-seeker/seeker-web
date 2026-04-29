@@ -1,12 +1,13 @@
 package com.seeker.web.dashboard.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class TopologyRequest {
 
-    private TimeRangeRequest timeRangeRequest;
+    private Long startTime;
+    private Long endTime;
 
 }
