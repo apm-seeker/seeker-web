@@ -33,6 +33,17 @@ public class DashboardService {
         List<NodeDto> nodes = dashboardRepository.getTopologyNodes(timeRangeFilter);
         List<EdgeDto> edges = dashboardRepository.getTopologyEdges(timeRangeFilter);
 
+        enrichNodesWithAgentInfo(nodes);
+        nodes.add(NodeDto.userNode());
+
+        return TopologyDto
+                .builder()
+                .nodes(nodes)
+                .edges(edges)
+                .build();
+    }
+
+    private void enrichNodesWithAgentInfo(List<NodeDto> nodes) {
         List<AgentId> agentIds = nodes.stream()
                 .map(NodeDto::getAgentId)
                 .toList();
@@ -44,12 +55,6 @@ public class DashboardService {
                 node.setNodeAgent(nodeAgent);
             }
         }
-
-        return TopologyDto
-                .builder()
-                .nodes(nodes)
-                .edges(edges)
-                .build();
     }
 
 }

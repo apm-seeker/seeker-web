@@ -7,10 +7,21 @@ import lombok.Getter;
 @Builder
 public class NodeDto {
 
+    private static final String USER_AGENT_NAME = "USER";
+    private static final String USER_AGENT_TYPE = "USER";
+
     private AgentId agentId;
     private String agentName;
     private String agentType;
     private double errorRate;
+
+    public static NodeDto userNode() {
+        return NodeDto.builder()
+                .agentId(AgentId.USER)
+                .agentName(USER_AGENT_NAME)
+                .agentType(USER_AGENT_TYPE)
+                .build();
+    }
 
     public void setNodeAgent(NodeAgentDto nodeAgent) {
         this.agentName = nodeAgent.getAgentName();
