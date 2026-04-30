@@ -7,7 +7,6 @@ import lombok.Getter;
 @Builder
 public class NodeDto {
 
-    private static final AgentId USER_AGENT_ID = AgentId.of("-1");
     private static final String USER_AGENT_NAME = "USER";
     private static final String USER_AGENT_TYPE = "USER";
 
@@ -18,7 +17,7 @@ public class NodeDto {
 
     public static NodeDto userNode() {
         return NodeDto.builder()
-                .agentId(USER_AGENT_ID)
+                .agentId(AgentId.USER)
                 .agentName(USER_AGENT_NAME)
                 .agentType(USER_AGENT_TYPE)
                 .build();
