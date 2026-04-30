@@ -1,14 +1,14 @@
 package com.seeker.web.dashboard.service;
 
 import com.seeker.web.dashboard.dto.query.TimeRangeFilter;
-import com.seeker.web.dashboard.dto.request.TopologyRequest;
+import com.seeker.web.dashboard.dto.request.TimeRangeRequest;
 import com.seeker.web.dashboard.dto.topolopy.AgentId;
 import com.seeker.web.dashboard.dto.topolopy.EdgeDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeAgentDto;
 import com.seeker.web.dashboard.dto.topolopy.NodeDto;
 import com.seeker.web.dashboard.dto.topolopy.TopologyDto;
 import com.seeker.web.dashboard.repository.AgentRepository;
-import com.seeker.web.dashboard.repository.DashboardRepository;
+import com.seeker.web.dashboard.repository.TopologyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,19 @@ import java.util.Map;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DashboardService {
+public class TopologyService {
 
-    private final DashboardRepository dashboardRepository;
+    private final TopologyRepository topologyRepository;
     private final AgentRepository agentRepository;
 
-    public TopologyDto getTopology(TopologyRequest topologyRequest) {
+    public TopologyDto getTopology(TimeRangeRequest timeRangeRequest) {
 
         TimeRangeFilter timeRangeFilter = TimeRangeFilter.of(
-                topologyRequest.getStartTime(), topologyRequest.getEndTime()
+                timeRangeRequest.getStartTime(), timeRangeRequest.getEndTime()
         );
 
-        List<NodeDto> nodes = dashboardRepository.getTopologyNodes(timeRangeFilter);
-        List<EdgeDto> edges = dashboardRepository.getTopologyEdges(timeRangeFilter);
+        List<NodeDto> nodes = topologyRepository.getTopologyNodes(timeRangeFilter);
+        List<EdgeDto> edges = topologyRepository.getTopologyEdges(timeRangeFilter);
 
         enrichNodesWithAgentInfo(nodes);
         nodes.add(NodeDto.userNode());
