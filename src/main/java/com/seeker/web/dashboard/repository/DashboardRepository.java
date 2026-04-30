@@ -26,7 +26,9 @@ public class DashboardRepository {
                 agent_id AS agentId,
                 countIf(status_code >= 400) / count() AS errorRate
             FROM span
-            WHERE start_time BETWEEN :startTime AND :endTime
+            WHERE start_time
+                  BETWEEN fromUnixTimestamp64Milli(:startTime)
+                      AND fromUnixTimestamp64Milli(:endTime)
             GROUP BY agent_id
         """;
 
@@ -42,11 +44,13 @@ public class DashboardRepository {
             SELECT
                 parent_agent_id AS fromAgentId,
                 agent_id AS toAgentId,
-                count() / nullIf((:endTime - :startTime), 0) AS tps,
+                count() / nullIf((:endTime - :startTime) / 1000.0, 0) AS tps,
                 avg(elapsed_time) AS avgLatency,
                 countIf(status_code >= 400) / count() AS errorRate
             FROM span
-            WHERE start_time BETWEEN :startTime AND :endTime
+            WHERE start_time
+                  BETWEEN fromUnixTimestamp64Milli(:startTime)
+                      AND fromUnixTimestamp64Milli(:endTime)
             GROUP BY agent_id, parent_agent_id
         """;
 
