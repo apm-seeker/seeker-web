@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DashboardRepository {
+public class TopologyRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 

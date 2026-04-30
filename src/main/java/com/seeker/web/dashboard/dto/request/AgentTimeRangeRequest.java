@@ -5,9 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TopologyRequest {
+public class AgentTimeRangeRequest {
 
     private Long startTime;
     private Long endTime;
+    private String agentId;
 
 }

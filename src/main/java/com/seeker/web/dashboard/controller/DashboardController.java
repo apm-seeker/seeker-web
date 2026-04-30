@@ -1,8 +1,11 @@
 package com.seeker.web.dashboard.controller;
 
-import com.seeker.web.dashboard.dto.request.TopologyRequest;
+import com.seeker.web.dashboard.dto.metrics.AgentMetricsDto;
+import com.seeker.web.dashboard.dto.request.AgentTimeRangeRequest;
+import com.seeker.web.dashboard.dto.request.TimeRangeRequest;
 import com.seeker.web.dashboard.dto.topolopy.TopologyDto;
-import com.seeker.web.dashboard.service.DashboardService;
+import com.seeker.web.dashboard.service.AgentMetricsService;
+import com.seeker.web.dashboard.service.TopologyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +16,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/dashboard")
 public class DashboardController {
 
-    private final DashboardService dashboardService;
+    private final TopologyService topologyService;
+    private final AgentMetricsService agentMetricsService;
 
     @GetMapping("/topology")
     public TopologyDto getTopology(
-            @ModelAttribute TopologyRequest topologyRequest
+            @ModelAttribute TimeRangeRequest timeRangeRequest
     ) {
-        return dashboardService.getTopology(topologyRequest);
+        return topologyService.getTopology(timeRangeRequest);
+    }
+
+    @GetMapping("/metrics")
+    public AgentMetricsDto getTopology(
+            @ModelAttribute AgentTimeRangeRequest agentTimeRangeRequest
+    ) {
+        return agentMetricsService.getAgentMetrics(agentTimeRangeRequest);
     }
 
 }
